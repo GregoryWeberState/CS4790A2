@@ -45,8 +45,9 @@ namespace CS4790A2.Controllers
         }
 
         // GET: Sections/Create
-        public ActionResult Create()
+        public ActionResult Create(string courseNumber)
         {
+            ViewBag.courseNumber = courseNumber;
             return View();
         }
 
@@ -59,9 +60,11 @@ namespace CS4790A2.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.sections.Add(section);
-                db.SaveChanges();
+                Repository.createSection(section);
+                //db.sections.Add(section);
+                //db.SaveChanges();
                 return RedirectToAction("Index");
+                //return RedirectToAction("Index");
             }
 
             return View(section);
@@ -94,8 +97,9 @@ namespace CS4790A2.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(section).State = EntityState.Modified;
-                db.SaveChanges();
+                //db.Entry(section).State = EntityState.Modified;
+                //db.SaveChanges();
+                Repository.editSection(section);
                 return RedirectToAction("Index");
             }
             return View(section);
@@ -124,9 +128,11 @@ namespace CS4790A2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Section section = db.sections.Find(id);
-            db.sections.Remove(section);
-            db.SaveChanges();
+            //Section section = db.sections.Find(id);
+            //db.sections.Remove(section);
+            //db.SaveChanges();
+            Section section = Repository.getSection(id);
+            Repository.deleteSection(section);
             return RedirectToAction("Index");
         }
 

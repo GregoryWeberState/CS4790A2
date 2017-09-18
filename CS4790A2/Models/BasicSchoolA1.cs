@@ -42,6 +42,65 @@ namespace CS4790A2.Models
             return db.sections.ToList();
         }
 
+        public static void deleteCourse(Course course)
+        {
+           BasicSchoolA1DbContext db = new BasicSchoolA1DbContext();
+           db.Entry(course).State = EntityState.Deleted;
+           db.courses.Remove(course);
+           db.SaveChanges();
+
+        }
+
+        public static void deleteSection(Section section)
+        {
+            BasicSchoolA1DbContext db = new BasicSchoolA1DbContext();
+            db.Entry(section).State = EntityState.Deleted;
+            db.sections.Remove(section);
+            db.SaveChanges();
+
+        }
+
+        public static void editCourse(Course course)
+        {
+            BasicSchoolA1DbContext db = new BasicSchoolA1DbContext();
+            db.Entry(course).State = EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        public static void editSection(Section section)
+        {
+            BasicSchoolA1DbContext db = new BasicSchoolA1DbContext();
+            db.Entry(section).State = EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        public static void createSection(Section section)
+        {
+            BasicSchoolA1DbContext db = new BasicSchoolA1DbContext();
+            db.Entry(section).State = EntityState.Added;
+            db.sections.Add(section);
+            db.SaveChanges();
+        }
+
+        public static void createCourse(Course course)
+        {
+            BasicSchoolA1DbContext db = new BasicSchoolA1DbContext();
+            db.Entry(course).State = EntityState.Added;
+            db.courses.Add(course);
+            db.SaveChanges();
+        }
+
+        public static CourseAndSections getCourseAndSections(int? id)
+        {
+            BasicSchoolA1DbContext db = new BasicSchoolA1DbContext();
+            CourseAndSections courseSection = new CourseAndSections();
+            courseSection.course = db.courses.Find(id);
+            var sections = db.sections.Where(s => s.courseNumber == courseSection.course.courseNumber);
+            courseSection.sections = sections.ToList();
+
+            return courseSection;
+        }
+
     }
 
     [Table("Course")]
